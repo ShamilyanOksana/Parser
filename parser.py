@@ -17,6 +17,24 @@ def get_total_pages(html):
     return int(total_pages)
 
 
+def get_page_data(html):
+    soup = BeautifulSoup(html, 'lxml')
+
+    ads = soup.find('div', class_='catalog-list').find_all('h3', class_='title item-description-title')
+
+    for j in range(len(ads)):
+        print(j+1, '.', end=" ")
+        current_ads = ads[j].find('a', class_='item-description-title-link')
+        title = current_ads.get('title')
+        print(title)
+
+        link = "https://www.avito.ru" + current_ads.get('href')
+        print(link)
+
+        price = current_ads.get('')
+
+
+
 def main():
     url = "https://www.avito.ru/taganrog/telefony/samsung?q=sumsung&p=1"
     base_url = "https://www.avito.ru/taganrog/telefony/samsung?"
@@ -26,9 +44,12 @@ def main():
     html = get_html(url)
     total_pages = get_total_pages(html)
 
-    for i in range(1, total_pages+1):
+    # for i in range(1, total_pages+1):
+    for i in range(1, 2):
         url_gen = base_url + page_part + str(i) + query_part
+        html = get_html(url_gen)
         print(url_gen)
+        get_page_data(html)
 
 
 if __name__ == "__main__":
